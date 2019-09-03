@@ -4,36 +4,26 @@
 <head>
     <meta charset="utf-8">
     <title>API GIFtastick</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-body {
-    background-color:black;
-    /* Location of the image */
-    background-image: url("assets\\images\\bg001.jpg");
-
-    /* Image is centered vertically and horizontally at all times */
-    background-position: center center;
-
-    /* Image doesn't repeat */
-    background-repeat: no-repeat;
-
-    /* Makes the image fixed in the viewport so that it doesn't move when 
+        body {
+            /* Location of the image */
+            background-image: url("assets\\images\\bg001.jpg");
+            /* Image is centered vertically and horizontally at all times */
+            background-position: center;
+            /* Image doesn't repeat */
+            background-repeat: no-repeat;
+            /* Makes the image fixed in the viewport so that it doesn't move when 
 the content height is greater than the image height */
-    background-attachment: fixed;
-
-    /* This is what makes the background image rescale based on its container's size */
-    background-size: cover;
-
-    /* Pick a solid background color that will be displayed while the background image is loading */
-    /* background-color: black; */
-
-
-}
-
+            background-attachment: fixed;
+            /* This is what makes the background image rescale based on its container's size */
+            background-size: cover;
+            /* Pick a solid background color that will be displayed while the background image is loading */
+            background-color: black;
+        }
     </style>
 </head>
 
@@ -46,31 +36,26 @@ the content height is greater than the image height */
                     <p class="lead text-secondary">GIFtastick! is an online search engine that allows users to search
                         for short looping videos with no sound, that resemble animated GIF files. You can add topics by
                         simply type your topic and click on the Add button</p>
-
                 </div>
             </div>
         </div>
-        <div class="row m-2">
+        <div class="row m-1">
             <div id="top" class="col"></div>
         </div>
-        <div class="row m-2">
+        <div class="row m-1">
             <div id="middle" class="col ">
-
-                <input class="form-control" type="text" id="input" placeholder="e.g. Birds">
+                <input class="form-control" type="text" id="input" placeholder="e.g. confused john travolta">
                 <button id="add-cat" class="btn btn-outline-secondary m-1">Add Topic ▲ </button>
                 <button id="clear" class="btn btn-outline-info float-right m-1">Clear ▼ </button>
-
-
+                <br>
                 <br>
             </div>
         </div>
         <div class="row ">
             <div id="buttom" class="col d-flex flex-wrap justify-content-center">
-                <!-- <div  class="card-group"></div> -->
-
+                <!-- show gifs here -->
             </div>
         </div>
-
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/javascript/app.js"></script>
