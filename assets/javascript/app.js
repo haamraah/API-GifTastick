@@ -58,13 +58,7 @@ function displayGifs() {
   // grab the index of last image we loaded
   var startAt = $(this).attr("startAt");
   // add to the index
-  topics.filter(function (i) {
-    if (i.name == topic) {
-      i.index += 10;
-    }
-  })
-  // re render buttons with new number of images loaded
-  renderButtons();
+
 
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=0zRvwT6PJIjlYCYxmO5t1APuUPVX83WB&limit=10&offset=" + startAt;
   // Creates AJAX call for the specific topic button being clicked
@@ -72,15 +66,22 @@ function displayGifs() {
     url: queryURL,
     method: "GET"
   }).then(function (response) {
+    topics.filter(function (t) {
+      if (t.name == topic) {
+        t.index += response.data.length;
+      }
 
+      // re render buttons with new number of images loaded
+      renderButtons();
+    })
     for (var i = 0; i < response.data.length; i++) {
       // creat a bootstrap CARD for each entry of the response array
-      // 
+      //   
       // id is dynamiclly generated for each CARD
-      var cardDiv = $("<div>").addClass("card bg-secondary m-1 float-left").attr("id", "div-" + response.data[i].id).attr("style", "width:310px ; min-width: 310px");
+      var cardDiv = $("<div>").addClass("card bg-dark  m-1 float-left").attr("id", "div-" + response.data[i].id).attr("style", "width:310px ; min-width: 310px");
       // id is dynamiclly generated for each image , save the still and playing url from api in to src-still and src-play attribute, assign GIF class for event handler
-      var newImg = $("<img>").attr("id", response.data[i].id).addClass("card-img-top GIF").attr("style", "max-height: 200px ;height :200px;width:310px ; min-width: 310px ").attr("src-still", response.data[i].images.fixed_height_still.url).attr("src-play", response.data[i].images.fixed_height.url).attr("src", response.data[i].images.fixed_height_still.url);
-      var cardBody = $("<div>").addClass("card-body").attr("style", "height :120px");
+      var newImg = $("<img>").attr("id", response.data[i].id).addClass("card-img-top GIF").attr("style", "max-height: 200px ;opacity: 1;height :200px;width:310px ; min-width: 310px ").attr("src-still", response.data[i].images.fixed_height_still.url).attr("src-play", response.data[i].images.fixed_height.url).attr("src", response.data[i].images.fixed_height_still.url);
+      var cardBody = $("<div>").addClass("card-body text-info").attr("style", "background: rgb(0,0,0);height :120px");
       // grab gif Title and Rating from API
       var newH = $("<h5>").addClass("card-title").text(topic + " : " + response.data[i].title);
       var newP = $("<p>").addClass("card-text").text("Rating : " + response.data[i].rating);
@@ -153,7 +154,7 @@ $(document).on("click", "#add-cat", function () {
         notInTopics = false;
       }
     })
- 
+
     if (notInTopics) {
       // The topic from the textbox is then added to our array
       var newObj = { name: newTopic, index: 0 }
