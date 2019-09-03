@@ -53,7 +53,7 @@ function displayGifs() {
   // grab the index of last image we loaded
   var startAt = $(this).attr("startAt");
   // creat the url for AJAX 
-  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=0zRvwT6PJIjlYCYxmO5t1APuUPVX83WB&limit=10&offset=" + startAt;
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=0zRvwT6PJIjlYCYxmO5t1APuUPVX83WB&limit=4&offset=" + startAt;
   // Creates AJAX call for the specific topic button being clicked
   $.ajax({
     url: queryURL,
@@ -109,7 +109,7 @@ $(document).on("click", ".GIF", function () {
   $("#" + newImg.attr("id")).remove();
   $("#div-" + newImg.attr("id")).prepend(newImg);
   // after time-out call playGif with image clicked on instant (to save id and image container id)
-  setTimeout(function () { playGif(newImg) }, 800);
+  setTimeout(function () { playGif(newImg) }, 500);
 });
 $(document).on("click", ".stopGIF", function () {
   // get an instant of the image clicked on
@@ -120,7 +120,7 @@ $(document).on("click", ".stopGIF", function () {
   $("#" + newImg.attr("id")).remove();
   $("#div-" + newImg.attr("id")).prepend(newImg);
   // after time-out call stopGif with image clicked on instant (to save id and image container id)
-  setTimeout(function () { stopGif(newImg) }, 1000);
+  setTimeout(function () { stopGif(newImg) }, 500);
 });
 $(document).on("click", "#clear", function () {
   // clear the buttom container
