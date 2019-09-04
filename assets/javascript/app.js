@@ -76,7 +76,16 @@ function displayGifs() {
       // id is dynamiclly generated for each image , save the still and playing url from api in to src-still and src-play attribute, assign GIF class for event handler
       var newImg = $("<img>").attr("id", response.data[i].id).addClass("card-img-top GIF").attr("style", "max-height: 200px ;height :200px;width:310px ; min-width: 310px ").attr("src-still", response.data[i].images.fixed_height_still.url).attr("src-play", response.data[i].images.fixed_height.url).attr("src", response.data[i].images.fixed_height_still.url).attr("rating", response.data[i].rating).attr("title", response.data[i].title);
       var cardBody = $("<div>").addClass("card-body text-info").attr("style", "background: rgb(0,0,0);height :160px");
-      var newlink = $("<a>").addClass("save btn btn-outline-info").text("♡").attr("image-id", response.data[i].id);
+      if (!alreadySaved(response.data[i].id)) {
+        var newlink = $("<a>").addClass("save btn btn-outline-info").text("♡").attr("image-id", response.data[i].id);
+console.log("not here")
+      } else {
+        var newlink = $("<a>").addClass("UNsave btn btn-outline-info").text("♥").attr("image-id", response.data[i].id);
+        console.log("here")
+
+      }
+
+
 
       // grab gif Title and Rating from API
       var newH = $("<h5>").addClass("card-title").text(topic + " : " + response.data[i].title);
@@ -99,7 +108,17 @@ function stopGif(img) {
 
 }
 
+function alreadySaved(id) {
+  // read localStorage and save it in obj, then we read each key in the obj object 
+  var obj = localStorage;
+  var foundIt = false;
+  Object.keys(obj).forEach(function (key) {
+    if (id === key) { foundIt = true }
 
+  });
+  console.log("foundit-->", foundIt);
+  return foundIt;
+}
 function showSaved() {
   // read localStorage and save it in obj, then we read each key in the obj object 
   var obj = localStorage;
@@ -205,5 +224,6 @@ $(document).on("click", ".save", function () {
 $(document).ready(function () {
   renderButtons();
   showSaved();
+  // alreadySaved("a");
 });
 
