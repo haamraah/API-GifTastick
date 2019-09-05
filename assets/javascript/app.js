@@ -1,19 +1,19 @@
 // var topics = ["dog", "cat", "mouse", "lizard"];
 var topics = [
   {
-    name: "dog",
+    name: "Uma Thurman",
     index: 0
   }
   , {
-    name: "cat",
+    name: "pulp fiction",
     index: 0
   }
   , {
-    name: "party",
+    name: "dominic decoco",
     index: 0
   }
   , {
-    name: "good job",
+    name: "Jules Winnfield",
     index: 0
   }
 ]
@@ -26,7 +26,6 @@ function renderButtons() {
   // Deletes the topic buttons prior to adding new topic
   // (this is necessary otherwise you will have repeat buttons)
   $("#top").empty();
-
   // Loops through the array of topics
   for (var i = 0; i < topics.length; i++) {
 
@@ -67,34 +66,36 @@ function displayGifs() {
       }
       // re render buttons with new number of images loaded => respons.data.lenght if 0 means there was no respons from api
       renderButtons();
+      console.log(response)
     })
+    // bootstrap card-group
+    var cardGroupDiv = $("<div>").addClass("card-group");
     for (var i = 0; i < response.data.length; i++) {
+
       // creat a bootstrap CARD for each entry of the response.data array
       //   
       // id is dynamiclly generated for each CARD
-      var cardDiv = $("<div>").addClass("card bg-dark  m-1 float-left").attr("id", "div-" + response.data[i].id).attr("style", "width:310px ; min-width: 310px");
-      // id is dynamiclly generated for each image , save the still and playing url from api in to src-still and src-play attribute, assign GIF class for event handler
-      var newImg = $("<img>").attr("id", response.data[i].id).addClass("card-img-top GIF").attr("style", "max-height: 200px ;height :200px;width:310px ; min-width: 310px ").attr("src-still", response.data[i].images.fixed_height_still.url).attr("src-play", response.data[i].images.fixed_height.url).attr("src", response.data[i].images.fixed_height_still.url).attr("rating", response.data[i].rating).attr("title", response.data[i].title);
-      var cardBody = $("<div>").addClass("card-body text-info").attr("style", "background: rgb(0,0,0);height :160px");
+      var cardDiv = $("<div>").addClass("card bg-dark").attr("id", "div-" + response.data[i].id).attr("style", "width:310px ; min-width: 310px");
+      // id is dynamiclly generated for each image , save the still and playing url from api in to src-still and src-play attribute, assign GIF class for event handler    
+      var newImg = $("<img>").attr("id", response.data[i].id).addClass("card-img-top GIF").attr("src-still", response.data[i].images.original_still.url).attr("src-play", response.data[i].images.original.url).attr("src", response.data[i].images.original_still.url).attr("rating", response.data[i].rating).attr("title", response.data[i].title).attr("style", "height:50%;");
+      var cardBody = $("<div>").addClass("card-body text-info").attr("style", "background: rgb(0,0,0);");
+
+      // checking by id if image is already in saved items
       if (!alreadySaved(response.data[i].id)) {
         var newlink = $("<a>").addClass("save btn btn-outline-info").text("♡").attr("image-id", response.data[i].id);
-console.log("not here")
       } else {
         var newlink = $("<a>").addClass("UNsave btn btn-outline-info").text("♥").attr("image-id", response.data[i].id);
-        console.log("here")
-
       }
-
-
-
       // grab gif Title and Rating from API
       var newH = $("<h5>").addClass("card-title").text(topic + " : " + response.data[i].title);
       var newP = $("<p>").addClass("card-text").text("Rating : " + response.data[i].rating);
       cardBody.append(newlink, newH, newP);
       cardDiv.append(newImg, cardBody);
-      // show new card on top
-      $("#buttom").prepend(cardDiv);
+      cardGroupDiv.append(cardDiv);
+
     }
+    // show new card on top
+    $("#buttom").prepend(cardGroupDiv);
   });
 }
 function playGif(img) {
@@ -116,12 +117,12 @@ function alreadySaved(id) {
     if (id === key) { foundIt = true }
 
   });
-  console.log("foundit-->", foundIt);
   return foundIt;
 }
 function showSaved() {
   // read localStorage and save it in obj, then we read each key in the obj object 
   var obj = localStorage;
+  console.log(Object.keys(obj))
   Object.keys(obj).forEach(function (key) {
     // for each key we have a json , use parse for convert json to js object 
     var element = JSON.parse(localStorage.getItem(key))
@@ -176,7 +177,7 @@ $(document).on("click", "#clear", function () {
   // re render buttons
   renderButtons();
 });
-$(document).on("click", "#show-saved", showSaved);
+$(document).on("click", ".show-saved", showSaved);
 $(document).on("click", "#add-cat", function () {
   // make sure input is not empty
   if ($("#input").val().trim()) {
@@ -202,13 +203,25 @@ $(document).on("click", "#add-cat", function () {
 });
 $(document).on("click", ".UNsave", function () {
   $(this).text("♡").attr("class", "save btn btn-outline-info");
-  //  console.log(localStorage);
-
   localStorage.removeItem($(this).attr("image-id"));
+
+  // check if localStorage is empty, if
+  var obj = localStorage;
+  var saved = Object.keys(obj).length;
+  console.log(saved)
+  if (saved == 0) {
+    $("#show-saved").text("♡").attr("class", "btn  btn-outline-info float-right m-1")
+  } else {
+    $("#show-saved").text("♥").attr("class", "show-saved btn  btn-outline-info float-right m-1")
+  }
+
 
 });
 $(document).on("click", ".save", function () {
   $(this).text("♥").attr("class", "UNsave btn btn-outline-info");
+
+
+  // add new saved image in localStorage
   var obj = new Object;
   var image = $("#" + $(this).attr("image-id"));
   obj.srcStill = image.attr("src-still");
@@ -218,7 +231,15 @@ $(document).on("click", ".save", function () {
   obj.title = image.attr("title");
   localStorage.setItem(obj.id, JSON.stringify(obj));
 
-  // console.log(obj)
+  // check if localStorage is empty, if
+  var obj = localStorage;
+  var saved = Object.keys(obj).length;
+  console.log(saved)
+  if (saved == 0) {
+    $("#show-saved").text("♡").attr("class", "btn  btn-outline-info float-right m-1")
+  } else {
+    $("#show-saved").text("♥").attr("class", "show-saved btn  btn-outline-info float-right m-1")
+  }
 });
 // rendering initial 
 $(document).ready(function () {
