@@ -143,6 +143,17 @@ function showSaved() {
 
   });
 }
+function checkSaved() {
+  // check if localStorage is empty, if
+  var obj = localStorage;
+  var saved = Object.keys(obj).length;
+  console.log(saved)
+  if (saved == 0) {
+    $("#show-saved").text("♡").attr("class", "btn  btn-outline-info float-right m-1")
+  } else {
+    $("#show-saved").text("♥").attr("class", "show-saved btn  btn-outline-info float-right m-1")
+  }
+}
 // /////////
 // event handler
 // /////////
@@ -205,16 +216,7 @@ $(document).on("click", ".UNsave", function () {
   $(this).text("♡").attr("class", "save btn btn-outline-info");
   localStorage.removeItem($(this).attr("image-id"));
 
-  // check if localStorage is empty, if
-  var obj = localStorage;
-  var saved = Object.keys(obj).length;
-  console.log(saved)
-  if (saved == 0) {
-    $("#show-saved").text("♡").attr("class", "btn  btn-outline-info float-right m-1")
-  } else {
-    $("#show-saved").text("♥").attr("class", "show-saved btn  btn-outline-info float-right m-1")
-  }
-
+  checkSaved();
 
 });
 $(document).on("click", ".save", function () {
@@ -231,19 +233,12 @@ $(document).on("click", ".save", function () {
   obj.title = image.attr("title");
   localStorage.setItem(obj.id, JSON.stringify(obj));
 
-  // check if localStorage is empty, if
-  var obj = localStorage;
-  var saved = Object.keys(obj).length;
-  console.log(saved)
-  if (saved == 0) {
-    $("#show-saved").text("♡").attr("class", "btn  btn-outline-info float-right m-1")
-  } else {
-    $("#show-saved").text("♥").attr("class", "show-saved btn  btn-outline-info float-right m-1")
-  }
+  checkSaved();
 });
 // rendering initial 
 $(document).ready(function () {
   renderButtons();
+  checkSaved();
   showSaved();
   // alreadySaved("a");
 });
