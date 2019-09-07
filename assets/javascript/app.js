@@ -1,4 +1,3 @@
-// var topics = ["dog", "cat", "mouse", "lizard"];
 var topics = [
   {
     name: "Uma Thurman",
@@ -32,7 +31,7 @@ function renderButtons() {
     // Then dynamicaly generates buttons for each topic in the array
     // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
     var a = $("<button>");
-    // Adds a class of topic to our button
+    // Adds a class of .topic to our button
     a.addClass("topic btn btn-outline-info m-1");
     // Added a data-attribute
     a.attr("data-name", topics[i].name);
@@ -47,7 +46,6 @@ function renderButtons() {
   }
 }
 function displayGifs() {
-
   // grab the topic from data-name attr of the button 
   var topic = $(this).attr("data-name");
   // grab the index of last image we loaded
@@ -66,47 +64,47 @@ function displayGifs() {
       }
       // re render buttons with new number of images loaded => respons.data.lenght if 0 means there was no respons from api
       renderButtons();
-      console.log(response)
     })
-    // bootstrap card-group
-    var cardGroupDiv = $("<div>").addClass("card-group");
     for (var i = 0; i < response.data.length; i++) {
-
       // creat a bootstrap CARD for each entry of the response.data array
       //   
       // id is dynamiclly generated for each CARD
-      var cardDiv = $("<div>").addClass("card bg-dark").attr("id", "div-" + response.data[i].id).attr("style", "width:310px ; min-width: 310px");
+      var cardDiv = $("<div>").addClass("card m-2 bg-dark").attr("id", "div-" + response.data[i].id);
       // id is dynamiclly generated for each image , save the still and playing url from api in to src-still and src-play attribute, assign GIF class for event handler    
-      var newImg = $("<img>").attr("id", response.data[i].id).addClass("card-img-top GIF").attr("src-still", response.data[i].images.original_still.url).attr("src-play", response.data[i].images.original.url).attr("src", response.data[i].images.original_still.url).attr("rating", response.data[i].rating).attr("title", response.data[i].title).attr("style", "height:50%;");
-      var cardBody = $("<div>").addClass("card-body text-info").attr("style", "background: rgb(0,0,0);");
+      var newImg = $("<img>").attr("id", response.data[i].id).addClass("card-img img-GIF").attr("src-still", response.data[i].images.original_still.url).attr("src-play", response.data[i].images.original.url).attr("src", response.data[i].images.original_still.url).attr("rating", response.data[i].rating).attr("title", response.data[i].title).attr("style", "height:100%;");
+
+
+      var cardBody = $("<div>").addClass("card-img-overlay GIF d-flex align-items-end justify-content-between text-white").attr("unic-id", response.data[i].id).attr("id", "div-" + response.data[i].id);
 
       // checking by id if image is already in saved items
       if (!alreadySaved(response.data[i].id)) {
-        var newlink = $("<a>").addClass("save btn btn-outline-info").text("♡").attr("image-id", response.data[i].id);
+        var newlink = $("<a>").addClass("save float-right btn btn-outline-info").text("♡").attr("image-id", response.data[i].id).attr("style", "text-shadow: 2px 2px 1px #000000");
       } else {
-        var newlink = $("<a>").addClass("UNsave btn btn-outline-info").text("♥").attr("image-id", response.data[i].id);
+        var newlink = $("<a>").addClass("UNsave float-right btn btn-outline-info").text("♥").attr("image-id", response.data[i].id).attr("style", "text-shadow: 2px 2px 1px #000000");
       }
-      // grab gif Title and Rating from API
-      var newH = $("<h5>").addClass("card-title").text(topic + " : " + response.data[i].title);
-      var newP = $("<p>").addClass("card-text").text("Rating : " + response.data[i].rating);
-      cardBody.append(newlink, newH, newP);
-      cardDiv.append(newImg, cardBody);
-      cardGroupDiv.append(cardDiv);
+      // play button on still image
+      var maskImg = $("<img>").attr("src", "assets/images/GIF.png").addClass("align-self-center");
 
+      // grab gif Title and Rating from API
+      var newH = $("<p>").addClass("card-text ").text(response.data[i].title.substring(0, 18) + "... " + " Rate: " + response.data[i].rating).attr("style", "text-shadow: 2px 2px 1px #000000");
+      // append title-rating , play button , save button
+      cardBody.append(newH, maskImg, newlink);
+
+      cardDiv.append(newImg, cardBody);
+      // show new card on top
+
+      $("#buttom").prepend(cardDiv);
     }
-    // show new card on top
-    $("#buttom").prepend(cardGroupDiv);
+
   });
 }
 function playGif(img) {
   // set image src to src-play attr , we saved playing and still image url before , also add stopGIF class for event handler
-  img.attr("src", img.attr("src-play")).attr("class", "card-img-top stopGIF ");
-
+  img.attr("src", img.attr("src-play")).attr("class", "card-img-top img-stopGIF");
 }
 function stopGif(img) {
   // set image src to src-play attr , we saved playing and still image url before , also add stopGIF class for event handler
-  img.attr("src", img.attr("src-still")).attr("class", "card-img-top GIF");
-
+  img.attr("src", img.attr("src-still")).attr("class", "card-img-top img-GIF");
 }
 
 function alreadySaved(id) {
@@ -127,16 +125,21 @@ function showSaved() {
     // for each key we have a json , use parse for convert json to js object 
     var element = JSON.parse(localStorage.getItem(key))
     // 
-    var cardDiv = $("<div>").addClass("card bg-dark  m-1 float-left").attr("id", "div-" + element.id).attr("style", "width:310px ; min-width: 310px");
+    var cardDiv = $("<div>").addClass("card bg-dark  m-1 float-left").attr("id", "div-" + element.id);
     // id is dynamiclly generated for each image , save the still and playing url from api in to src-still and src-play attribute, assign GIF class for event handler
-    var newImg = $("<img>").attr("id", element.id).addClass("card-img-top GIF").attr("style", "max-height: 200px ;height :200px;width:310px ; min-width: 310px ").attr("src-still", element.srcStill).attr("src-play", element.srcPlay).attr("src", element.srcStill).attr("rating", element.rating).attr("title", element.title);
-    var cardBody = $("<div>").addClass("card-body text-info").attr("style", "background: rgb(0,0,0);height :160px");
-    var newlink = $("<a>").addClass("UNsave btn btn-outline-info").text("♥").attr("image-id", element.id);
+    var newImg = $("<img>").attr("id", element.id).addClass("card-img GIF").attr("src-still", element.srcStill).attr("src-play", element.srcPlay).attr("src", element.srcStill).attr("rating", element.rating).attr("title", element.title).attr("style", "height :100%;");
 
-    // grab gif Title and Rating from API
-    var newH = $("<h5>").addClass("card-title").text("Saved : " + element.title);
-    var newP = $("<p>").addClass("card-text").text("Rating : " + element.rating);
-    cardBody.append(newlink, newH, newP);
+    var cardBody = $("<div>").addClass("card-img-overlay GIF d-flex align-items-end justify-content-between text-white").attr("unic-id", element.id);
+    // save button
+    var newlink = $("<a>").addClass("UNsave float-right btn btn-outline-info").text("♥").attr("image-id", element.id).attr("style", "text-shadow: 2px 2px 1px #000000");;
+    // play button
+    var maskImg = $("<img>").attr("src", "assets/images/GIF.png").addClass("align-self-center");
+
+    // grab gif Title  from localStorage
+    var newH = $("<p>").addClass("card-text").text(element.title).attr("style", "max-width:40%;text-shadow: 2px 2px 1px #000000");
+
+    // append title-rating , play button , save button
+    cardBody.append(newH, maskImg, newlink);
     cardDiv.append(newImg, cardBody);
     // show new card on top
     $("#buttom").prepend(cardDiv);
@@ -160,24 +163,38 @@ function checkSaved() {
 
 $(document).on("click", ".topic", displayGifs);
 $(document).on("click", ".GIF", function () {
-  // get an instant of the image clicked on
-  var newImg = $(this);
+  // get an instant of the image clicked on , unic-id is paired with image id and "div-"+[id]
+  var newImg = $("#" + $(this).attr("unic-id"));
+  playGif(newImg);
+  // remove title , play and save button
+  $(this).attr("class", "card-img-overlay stopGIF d-flex align-items-end justify-content-between text-white");
+  $(this).empty()
 
-  // set image src to loading.gif
-  newImg.attr("src", "assets\\images\\loading.gif").attr("class", "card-img-top ");
-
-  // after time-out call playGif with image clicked on instant (to save id and image container id)
-  setTimeout(function () { playGif(newImg) }, 500);
 });
 $(document).on("click", ".stopGIF", function () {
-  // get an instant of the image clicked on
-  var newImg = $(this);
-  // set image src to loading gif
-  newImg.attr("src", "assets\\images\\loading.gif").attr("class", "card-img-top ");
 
-  // after time-out call stopGif with image clicked on instant (to save id and image container id)
-  setTimeout(function () { stopGif(newImg) }, 500);
-});
+  // get an instant of the image clicked on
+  var newImg = $("#" + $(this).attr("unic-id"));
+  // changee back the class of div clicked on to GIF
+  $(this).attr("class", "card-img-overlay GIF d-flex align-items-end justify-content-between text-white");
+  // and create and append title-play and save button again wehen we stop playing
+  // save button
+  if (!alreadySaved(newImg.attr("id"))) {
+    var newlink = $("<a>").addClass("save float-right btn btn-outline-info").text("♡").attr("image-id", newImg.attr("id")).attr("style", "text-shadow: 2px 2px 1px #000000");
+  } else {
+    var newlink = $("<a>").addClass("UNsave float-right btn btn-outline-info").text("♥").attr("image-id", newImg.attr("id")).attr("style", "text-shadow: 2px 2px 1px #000000");
+  }
+  // play button
+  var maskImg = $("<img>").attr("src", "assets/images/GIF.png").addClass("align-self-center");
+
+  // grab gif Title and Rating from img
+  var newH = $("<p>").addClass("card-text ").text(newImg.attr("title") + "... " + " Rate: " + newImg.attr("rating")).attr("style", "text-shadow: 2px 2px 1px #000000");
+
+  $(this).append(newH, maskImg, newlink);
+  // stop playing
+  stopGif(newImg);
+
+})
 $(document).on("click", "#clear", function () {
   // clear the buttom container
   $("#buttom").empty();
@@ -215,14 +232,10 @@ $(document).on("click", "#add-cat", function () {
 $(document).on("click", ".UNsave", function () {
   $(this).text("♡").attr("class", "save btn btn-outline-info");
   localStorage.removeItem($(this).attr("image-id"));
-
   checkSaved();
-
 });
 $(document).on("click", ".save", function () {
   $(this).text("♥").attr("class", "UNsave btn btn-outline-info");
-
-
   // add new saved image in localStorage
   var obj = new Object;
   var image = $("#" + $(this).attr("image-id"));

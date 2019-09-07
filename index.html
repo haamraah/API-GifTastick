@@ -7,14 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
-
         body {
 
             /* Location of the image */
-            background-image: url("assets\\images\\bg001.jpg");
+            background-image: url("assets/images/bg001.jpg");
+            /* Image is centered vertically and horizontally at all times */
+            background-position: center;
+            /* Image doesn't repeat */
+            /* background-repeat: no-repeat; */
+            /* Makes the image fixed in the viewport so that it doesn't move when 
+the content height is greater than the image height */
+            background-attachment: fixed;
+            /* This is what makes the background image rescale based on its container's size */
+            /* background-size: cover; */
+            /* Pick a solid background color that will be displayed while the background image is loading */
+            background-color: black;
+        }
+
+       
+        .GIFXXXXX {
+
+
+            /* Location of the image */
+            background-image: url("assets/images/GIF.png");
             /* Image is centered vertically and horizontally at all times */
             background-position: center;
             /* Image doesn't repeat */
@@ -23,9 +41,9 @@
 the content height is greater than the image height */
             background-attachment: fixed;
             /* This is what makes the background image rescale based on its container's size */
-            background-size: cover;
+            /* background-size: cover; */
             /* Pick a solid background color that will be displayed while the background image is loading */
-            background-color: black;
+            /* background-color: black; */
         }
     </style>
 </head>
@@ -62,6 +80,8 @@ the content height is greater than the image height */
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="jquery.imgMask.min.js"></script> -->
+
     <script src="assets/javascript/app.js"></script>
 </body>
 
