@@ -108,8 +108,11 @@ function displayGifs() {
 
       cardDiv.append(newImg, cardBody);
       // show new card on top
-
+      cardDiv.attr("style", "opacity: 0");
       $("#buttom").prepend(cardDiv);
+      cardDiv.animate({
+        opacity: 1
+      }, 1500)
     }
 
   });
@@ -158,7 +161,11 @@ function showSaved() {
       cardBody.append(newH, maskImg, newlink);
       cardDiv.append(newImg, cardBody);
       // show new card on top
+      cardDiv.attr("style", "opacity: 0");
       $("#buttom").prepend(cardDiv);
+      cardDiv.animate({
+        opacity: 1
+      }, 1500)
     }
   });
 
